@@ -20,13 +20,3 @@ module.exports = {
   },
   plugins: []
 };
-EOF
-
-cat <<'EOF' > postcss.config.js
-module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {}
-  }
-};
-
