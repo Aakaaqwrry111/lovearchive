@@ -5,6 +5,7 @@ import { supabase } from "../lib/supabaseClient";
 
 const MAX_LENGTH = 280;
 const COOLDOWN_MS = 1500;
+const LOCAL_RT_KEY = "vault_local_realtime_messages";
 
 export default function Chat({ mode, title }) {
   const [messages, setMessages] = useState([]);
@@ -65,6 +66,20 @@ export default function Chat({ mode, title }) {
     };
   }, [mode, userId]);
 
+  useEffect(() => {
+    if (mode !== "realtime" || userId || typeof window === "undefined") return;
+    const stored = localStorage.getItem(LOCAL_RT_KEY);
+    if (!stored) return;
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        setMessages(parsed);
+      }
+    } catch {
+      setMessages([]);
+    }
+  }, [mode, userId]);
+
   const handleSend = async () => {
     if (!input.trim() || status === "loading") return;
     if (input.length > MAX_LENGTH) return;
@@ -77,8 +92,27 @@ export default function Chat({ mode, title }) {
     setCooldown(0);
 
     if (mode === "realtime") {
+      const content = input.trim();
+      if (!userId) {
+        const localMessage = {
+          id: `local-${Date.now()}`,
+          content,
+          user_id: "local"
+        };
+        setMessages((prev) => {
+          const next = [...prev, localMessage].slice(-40);
+          if (typeof window !== "undefined") {
+            localStorage.setItem(LOCAL_RT_KEY, JSON.stringify(next));
+          }
+          return next;
+        });
+        setInput("");
+        setStatus("idle");
+        return;
+      }
+
       setStatus("loading");
-      const payload = { content: input.trim(), user_id: userId };
+      const payload = { content, user_id: userId };
       const { error } = await supabase.from("messages").insert(payload);
       if (error) {
         setStatus("error");

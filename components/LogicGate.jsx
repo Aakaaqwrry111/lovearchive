@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+
 
 const lines = [
   "Scanning compatibility parameters…",
@@ -17,7 +17,6 @@ const randomOffset = () => ({
 });
 
 export default function LogicGate() {
-  const router = useRouter();
   const [visibleLines, setVisibleLines] = useState([]);
   const [noOffset, setNoOffset] = useState({ x: 0, y: 0 });
 
@@ -55,7 +54,7 @@ export default function LogicGate() {
         <div className="flex flex-col sm:flex-row gap-4 items-center">
           <button
             type="button"
-            onClick={() => router.push("/valentine")}
+            onClick={() => window.location.assign("/valentine")}
             className="rounded-full px-6 py-3 bg-cyan text-midnight font-semibold shadow-cyan animate-pulse"
           >
             YES / TRUE
