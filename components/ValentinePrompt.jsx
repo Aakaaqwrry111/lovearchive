@@ -10,9 +10,9 @@ const GIFS = {
   mun: "https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif",
   yap: "/gifs/gif6.gif",
   art: "/gifs/gif2.gif",
-  sick: "/gifs/gif3.gif", // Cute bear giving soup/hug
-  lucky: "/gifs/lucky.gif", // Something lucky, maybe a rabbit's foot or a four-leaf clover animation
-  final: "/gifs/gif5.gif" // A cute, romantic animation for the final slide
+  sick: "/gifs/gif3.gif", 
+  lucky: "/gifs/lucky.gif", 
+  final: "/gifs/gif5.gif" 
 };
 
 const PARTS = [
